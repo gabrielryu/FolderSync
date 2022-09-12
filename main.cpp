@@ -16,8 +16,7 @@ namespace fs = filesystem;
 
 const string snapshot_path = "snapshot.dat";
 const string origin_path = "foo";
-const string replica_path = "bar";
-
+string replica_path = "bar";
 string logPath = "log.txt";
 int interval = 10;
 
@@ -44,15 +43,12 @@ inline void Logger(string logMsg, const char *func)
 
 void Usage(const char *pname)
 {
-    cout << "Check";
-    cout << "Useage: " << pname << " [options]"
-         << " [options]"
-         << "\n";
-    cout << "ex) " << pname << " 5 log_sample.txt\n";
+    cout << "Useage: " << pname << " [Replica Folder]"
+         << " [Time Interval(sec)]" << " [log file]" << "\n";
+    cout << "ex) " << pname << "bar 5 log_sample.txt\n";
     cout << "If you don't add parameters, it runs with default values.\n";
-    cout << "Default : Interval (10 sec), Log file (./log.txt)\n";
+    cout << "Default : Original (foo), Replica (bar), Interval (10 sec), Log file (log.txt)\n";
     cout << "\n\n\n";
-    //cout << "Check";
 }
 
 int main(int argc, char *argv[])
@@ -60,19 +56,21 @@ int main(int argc, char *argv[])
     cout << "****************************************\n";
     cout << "*      Two Folder Sync Application     *\n";
     cout << "****************************************\n\n\n";
-    if (argc < 2)
+    if (argc < 4)
         Usage(argv[0]);
-    else
-    {
-        interval = atoi(argv[1]);
-        logPath = argv[2];
-    }
-    
-    if (argc > 3)
+    else if (argc > 4)
     {
         Usage(argv[0]);
         return 0;
     }
+    else
+    {
+        replica_path = argv[1];
+        interval = atoi(argv[2]);
+        logPath = argv[3];
+    }
+    
+    
     
     if (init())
     {
@@ -102,7 +100,6 @@ bool init()
         Logger(e.what(), __func__);
         return false;
     }
-
     read_files(out);
 
     if (!file_copy())
@@ -155,7 +152,6 @@ void remove_file(string path)
 void read_files(ofstream &out)
 {
     fs::recursive_directory_iterator itr(fs::current_path() / origin_path);
-
     while (itr != fs::end(itr))
     {
         const fs::directory_entry &entry = *itr;

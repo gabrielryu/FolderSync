@@ -1,0 +1,28 @@
+# : comments
+
+# ignore all .a files
+*.a
+
+# exclude lib.class from "*.a", meaning all lib.a are still tracked
+!lib.a
+
+# only ignore the TODO file in the current directory, not subdir/TODO
+/TODO
+
+# ignore all json files whose name begin with 'temp-'
+temp-*.json
+
+# only ignore the build.log file in current directory, not those in its subdirectories
+/build.log
+
+# specify a folder with slash in the end
+# ignore all files in the build/ directory
+build/
+.vscode/
+
+# ignore doc/notes.txt, but not doc/server/arch.txt
+#doc/*.txt
+
+# ignore all .pdf files in the doc/ directory
+# /** matches 0 or more directories
+doc/**/*.pdf
